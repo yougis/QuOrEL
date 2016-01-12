@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Document, Mension, Observation, Sondage, Operation, Sequence, Unite
+from .models import Document, Mention, Observation, Sondage, Operation, Sequence, Unite
 
 class DocumentAdmin(admin.ModelAdmin):
     list_display = ('nom_document','auteur','annee','traitement')
@@ -16,14 +16,14 @@ class DocumentAdmin(admin.ModelAdmin):
     ]
 
 
-class MensionAdmin(admin.ModelAdmin):
+class MentionAdmin(admin.ModelAdmin):
 
-	list_display = ('mension','document','page')
+	list_display = ('mention','document','page')
 	
 	fieldsets = [
         (None, 
         {'fields': (
-        	('mension','commentaire'),
+        	('mention','commentaire'),
         	('page','document'),
         	'sequence',    	
        	),}
@@ -53,7 +53,7 @@ class SequenceAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Document, DocumentAdmin)
-admin.site.register(Mension, MensionAdmin)
+admin.site.register(Mention, MentionAdmin)
 admin.site.register(Observation, ObservationAdmin)
 admin.site.register(Sondage, SondageAdmin)
 admin.site.register(Operation, OperationAdmin)

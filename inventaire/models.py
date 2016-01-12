@@ -83,16 +83,16 @@ class Sequence(models.Model):
     	return self.nom_sequence  + ' ID :  ' + format(self.id)
 
 @python_2_unicode_compatible
-class Mension(models.Model):
+class Mention(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    mension = models.TextField()
+    mention = models.TextField()
     page = models.CharField(max_length=20)
     commentaire = models.TextField(blank=True, null=True)
     document = models.ForeignKey(Document, blank=True, null=True)
     sequence =  models.ManyToManyField(Sequence)
 
     def __str__(self):
-    	return self.mension
+    	return self.Mention
 
 @python_2_unicode_compatible
 class Operation(models.Model):
