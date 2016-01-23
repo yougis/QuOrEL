@@ -10,8 +10,7 @@ class DocumentAdmin(admin.ModelAdmin):
         	('nom_document','auteur','annee'),        	
         	'commentaire',
         	'traitement',
-       	)
-       	
+       	)       	
        	}),
     ]
 
@@ -44,8 +43,7 @@ class ObservationAdmin(admin.ModelAdmin):
 
 
 class UniteAdmin(admin.ModelAdmin):
-	list_display = ('nom_unite','couleur','carbonate','taches','texture','structure')
-
+	list_display = ('nom_unite','profondeur','epaisseur','texture_1','texture_2','couleur','nuance_couleur','valeur_couleur','taches','carbonate','type_carbon','structure_1','taille_structure','structure_2','sous_structure','compacite','inclusion','mobilier','interpretation_sedimentaire','interpretation_pedologique','interface','echantillon','autre')
 
 class SequenceAdmin(admin.ModelAdmin):
 	list_display = ('nom_sequence',)

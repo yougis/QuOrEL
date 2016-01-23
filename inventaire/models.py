@@ -22,7 +22,26 @@ class Document(models.Model):
 class Unite(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nom_unite = models.CharField(max_length=100)
+    profondeur = models.FloatField(default=0.00)
+    epaisseur = models.FloatField(default=0.00)
+    texture_choix =  (
+    ('aucune','aucune'),
+    ('caillouteux','caillouteux'),
+    ('graveleux','graveleux'),
+    ('sableux','sableux'),
+    ('limoneux','limoneux'),
+    ('argileux','argileux')
+    )
+    texture_1 = models.CharField(max_length=20,
+        choices=texture_choix,
+        default='indéfini'
+        )
+    texture_2 = models.CharField(max_length=20,
+        choices=texture_choix,
+        default='indéfini'
+        )
     couleur_choix =  (
+    ('aucune','aucune'),
     ('blanc','blanc'),
     ('noir','noir'),
     ('brun','brun'),
@@ -31,46 +50,94 @@ class Unite(models.Model):
     ('rouge','rouge'),
     ('vert','vert'),
     ('bleu','bleu'),
-    ('rouille','rouille'),
+    ('rouille','rouille')
+    )
+    couleur = models.CharField(max_length=20,
+        choices=couleur_choix,
+        default='indéfini'
+        )
+    nuance_couleur = models.CharField(max_length=20,
+        choices=couleur_choix,
+        default='indéfini'
+        )
+    valeur_choix = (
+    ('très sombre','très sombre'),
+    ('sombre', 'sombre'),
+    ('pas de valeur particulière','pas de valeur particulière'),
     ('clair','clair'),
+    ('très clair','très clair')
     )
-    couleur = models.CharField(max_length=10,
-    	choices=couleur_choix,
-    	default='indéfini'
-    	)
+    valeur_couleur = models.CharField(max_length=20,
+        choices=valeur_choix,
+        default='pas de valeur particulière'
+        )
     couleur_MSCC = models.CharField(max_length=100)
-    carbonate = models.BooleanField()
     taches = models.TextField(blank=True, null=True)
-    texture_choix =  (
-    ('caillouteux','caillouteux'),
-    ('graveleux','graveleux'),
-    ('sableux','sableux'),
-    ('limoneux','limoneux'),
-    ('argileux','argileux'),
+    carbonate = models.BooleanField()
+    type_carbon_choix =(
+        ('masse fine','masse fine'),
+        ('secondaire','secondaire'),
+        ('poupées','poupées'),
+        ('pseudo-mycélium','pseudo-mycélium')
     )
-    texture = models.CharField(max_length=20,
-    	choices=texture_choix,
-    	default='indéfini'
-    	)
+    type_carbon = models.CharField(max_length=20,
+        choices=type_carbon_choix,
+        default='indéfini'
+        )
     structure_choix =  (
     ('massive','massive'),
     ('lamellaire','lamellaire'),
     ('polyyédrique','polyyédrique'),
     ('prismatique','prismatique'),
-    ('grossière','grossière'),
-    ('fine','fine'),
+    ('grumeleuse','grumeleuse'),
+    ('grenue','grenue')
     )
-    structure = models.CharField(max_length=20,
-    	choices=structure_choix,
-    	default='indéfini'
-    	)
-    inclusion = models.CharField(max_length=100)
+    structure_1 = models.CharField(max_length=20,
+        choices=structure_choix,
+        default='indéfini'
+        )
+    taille_structure_choix = (
+        ('très fine', 'très fine'),
+        ('fine', 'fine'),
+        ('pas de taille particulière','pas de taille particulière'),
+        ('grossière','grossière'),
+        ('très grossière','très grossière')
+    )
+    taille_structure = models.CharField(max_length=20,
+        choices=taille_structure_choix,
+        default='pas de taille particulière'
+        )
+    structure_2 = models.CharField(max_length=20,
+        choices=structure_choix,
+        default='indéfini'
+        )
+    sous_structure = models.CharField(max_length=20,
+        choices=structure_choix,
+        default='indéfini'
+        )
+    description_structure = models.CharField(max_length=100, null=True)
+    compacite_choix = (
+        ('très compact', 'très compact'),
+        ('compact', 'compact'),
+        ('peu compact','peu compact'),
+        ('meuble','meuble'),
+        ('très meuble','très meuble')
+    )
+    compacite = models.CharField(max_length=20,
+        choices=compacite_choix,
+        default='indéfini'
+        )
+    inclusion = models.CharField(max_length=100, null=True)
     mobilier = models.TextField(blank=True, null=True)
     perturbation = models.TextField(blank=True, null=True)
+    interpretation_sedimentaire = models.CharField(max_length=100, null=True)
+    interpretation_pedologique = models.CharField(max_length=100, null=True)
+    interface = models.CharField(max_length=100, null=True)
+    echantillon = models.CharField(max_length=100)
     autre = models.TextField(blank=True, null=True)
 
     def __str__(self):
-    	return self.nom_unite
+        return self.nom_unite
 
 
 @python_2_unicode_compatible
