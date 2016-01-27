@@ -74,9 +74,8 @@ TEMPLATES = [
 
 
 LEAFLET_CONFIG = {
-    'SPATIAL_EXTENT': (-5.14,42.23,8.49,51.33),
-    'DEFAULT_CENTER': (47.0, 3.0),
-    'DEFAULT_ZOOM': 6,
+    'DEFAULT_CENTER': (6.0, 45.0),
+    'DEFAULT_ZOOM': 16,
     'MIN_ZOOM': 3,
     'MAX_ZOOM': 18,
 }
@@ -90,10 +89,10 @@ WSGI_APPLICATION = 'quorel.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.mysql',
-         'NAME': 'quorel',
-         'USER': 'root',
+         'NAME': 'yogis$quorel',
+         'USER': 'yogis',
          'PASSWORD':'mcot',
-         'HOST':'localhost', # Set to empty string for localhost.
+         'HOST':'yogis.mysql.pythonanywhere-services.com', # Set to empty string for localhost.
          'PORT':'', # Set to empty string for default.
     }
 }
@@ -136,3 +135,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
