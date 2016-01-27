@@ -65,7 +65,9 @@ class SondageResource(resources.ModelResource):
         model = Sondage
 
 
-class SondageAdmin(ImportExportModelAdmin):
+
+#@admin.register(Sondage)
+class SondageAdmin(ImportExportModelAdmin, LeafletGeoAdmin):
     list_display = ('nom_sondage','operation')
     resource_class = SondageResource
     pass
@@ -75,7 +77,7 @@ class ObservationResource(resources.ModelResource):
     class Meta:
         model = Observation
 
-class ObservationAdmin(ImportExportModelAdmin):
+class ObservationAdmin(ImportExportModelAdmin, LeafletGeoAdmin):
     list_display = ('nom_observation','type_observation','sondage','sequence','acces_possible')
     resource_class = ObservationResource
     pass
@@ -106,8 +108,8 @@ class SequenceAdmin(ImportExportModelAdmin):
 
 admin.site.register(Document, DocumentAdmin)
 admin.site.register(Mention, MentionAdmin)
-admin.site.register(Observation, LeafletGeoAdmin)
-admin.site.register(Sondage, LeafletGeoAdmin)
+admin.site.register(Observation, ObservationAdmin)
+admin.site.register(Sondage, SondageAdmin)
 admin.site.register(Operation, OperationAdmin)
 admin.site.register(Sequence, SequenceAdmin)
 admin.site.register(Unite, UniteAdmin)
