@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='observation',
             name='type_obs',
-            field=models.CharField(choices=[('log', 'log'), ('coupe', 'coupe'), ('plan', 'plan')], default='indéfini', max_length=5),
+            field=models.CharField(choices=[('log', 'log'), ('coupe', 'coupe'), ('plan', 'plan')], default='indéfini', max_length=20),
         ),
         migrations.AddField(
             model_name='operation',
@@ -25,16 +25,16 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='unite',
             name='couleur',
-            field=models.CharField(choices=[('blanc', 'blanc'), ('noir', 'noir'), ('brun', 'brun'), ('jaune', 'jaune'), ('orange', 'orange'), ('rouge', 'rouge'), ('vert', 'vert'), ('bleu', 'bleu'), ('rouille', 'rouille'), ('clair', 'clair')], default='indéfini', max_length=2),
+            field=models.CharField(choices=[('blanc', 'blanc'), ('noir', 'noir'), ('brun', 'brun'), ('jaune', 'jaune'), ('orange', 'orange'), ('rouge', 'rouge'), ('vert', 'vert'), ('bleu', 'bleu'), ('rouille', 'rouille'), ('clair', 'clair')], default='indéfini', max_length=50),
         ),
         migrations.AddField(
             model_name='unite',
             name='structure',
-            field=models.CharField(choices=[('massive', 'massive'), ('lamellaire', 'lamellaire'), ('polyyédrique', 'polyyédrique'), ('prismatique', 'prismatique'), ('grossière', 'grossière'), ('fine', 'fine')], default='indéfini', max_length=2),
+            field=models.CharField(choices=[('massive', 'massive'), ('lamellaire', 'lamellaire'), ('polyyédrique', 'polyyédrique'), ('prismatique', 'prismatique'), ('grossière', 'grossière'), ('fine', 'fine')], default='indéfini', max_length=50),
         ),
         migrations.AddField(
             model_name='unite',
             name='texture',
-            field=models.CharField(choices=[('caillouteux', 'caillouteux'), ('graveleux', 'graveleux'), ('sableux', 'sableux'), ('limoneux', 'limoneux'), ('argileux', 'argileux')], default='indéfini', max_length=2),
+            field=models.CharField(choices=[('caillouteux', 'caillouteux'), ('graveleux', 'graveleux'), ('sableux', 'sableux'), ('limoneux', 'limoneux'), ('argileux', 'argileux')], default='indéfini', max_length=50),
         ),
     ]

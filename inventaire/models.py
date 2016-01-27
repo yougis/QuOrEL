@@ -5,10 +5,14 @@ from django.db import models
 from django.core.validators import MaxValueValidator
 from django.utils.encoding import python_2_unicode_compatible
 
+# import GIS
+from django.contrib.gis.db import models as gismodels
+
+
+
 # Create your models here.
 @python_2_unicode_compatible
 class Document(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nom_document = models.CharField(max_length=100)
     auteur = models.CharField(max_length=100)
     annee = models.PositiveIntegerField(validators=[MaxValueValidator(2016)])
@@ -20,7 +24,6 @@ class Document(models.Model):
 
 @python_2_unicode_compatible
 class Unite(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nom_unite = models.CharField(max_length=100)
     profondeur = models.FloatField(default=0.00)
     epaisseur = models.FloatField(default=0.00)
@@ -32,17 +35,18 @@ class Unite(models.Model):
     ('limoneux','limoneux'),
     ('argileux','argileux')
     )
-    texture_1 = models.CharField(max_length=20,
+    texture_1 = models.CharField(max_length=50,
         choices=texture_choix,
         default='indéfini'
         )
-    texture_2 = models.CharField(max_length=20,
+    texture_2 = models.CharField(max_length=50,
         choices=texture_choix,
         default='indéfini'
         )
     couleur_choix =  (
     ('aucune','aucune'),
     ('blanc','blanc'),
+    ('gris','gris'),
     ('noir','noir'),
     ('brun','brun'),
     ('jaune','jaune'),
@@ -52,35 +56,36 @@ class Unite(models.Model):
     ('bleu','bleu'),
     ('rouille','rouille')
     )
-    couleur = models.CharField(max_length=20,
+    couleur = models.CharField(max_length=50,
         choices=couleur_choix,
         default='indéfini'
         )
-    nuance_couleur = models.CharField(max_length=20,
+    nuance_couleur = models.CharField(max_length=50,
         choices=couleur_choix,
         default='indéfini'
         )
     valeur_choix = (
     ('très sombre','très sombre'),
     ('sombre', 'sombre'),
-    ('pas de valeur particulière','pas de valeur particulière'),
+    ('aucune','aucune'),
     ('clair','clair'),
     ('très clair','très clair')
     )
-    valeur_couleur = models.CharField(max_length=20,
+    valeur_couleur = models.CharField(max_length=50,
         choices=valeur_choix,
-        default='pas de valeur particulière'
+        default='aucune'
         )
     couleur_MSCC = models.CharField(max_length=100)
-    taches = models.TextField(blank=True, null=True)
+    tache = models.TextField(blank=True, null=True)
     carbonate = models.BooleanField()
     type_carbon_choix =(
         ('masse fine','masse fine'),
         ('secondaire','secondaire'),
         ('poupées','poupées'),
-        ('pseudo-mycélium','pseudo-mycélium')
+        ('pseudo-mycélium','pseudo-mycélium'),
+        ('aucune','aucune')
     )
-    type_carbon = models.CharField(max_length=20,
+    type_carbon = models.CharField(max_length=50,
         choices=type_carbon_choix,
         default='indéfini'
         )
@@ -92,7 +97,7 @@ class Unite(models.Model):
     ('grumeleuse','grumeleuse'),
     ('grenue','grenue')
     )
-    structure_1 = models.CharField(max_length=20,
+    structure_1 = models.CharField(max_length=50,
         choices=structure_choix,
         default='indéfini'
         )
@@ -103,19 +108,19 @@ class Unite(models.Model):
         ('grossière','grossière'),
         ('très grossière','très grossière')
     )
-    taille_structure = models.CharField(max_length=20,
+    taille_structure = models.CharField(max_length=50,
         choices=taille_structure_choix,
         default='pas de taille particulière'
         )
-    structure_2 = models.CharField(max_length=20,
+    structure_2 = models.CharField(max_length=50,
         choices=structure_choix,
         default='indéfini'
         )
-    sous_structure = models.CharField(max_length=20,
+    sous_structure = models.CharField(max_length=50,
         choices=structure_choix,
         default='indéfini'
         )
-    description_structure = models.CharField(max_length=100, null=True)
+    description_structure = models.CharField(blank=True, max_length=100, null=True)
     compacite_choix = (
         ('très compact', 'très compact'),
         ('compact', 'compact'),
@@ -123,17 +128,17 @@ class Unite(models.Model):
         ('meuble','meuble'),
         ('très meuble','très meuble')
     )
-    compacite = models.CharField(max_length=20,
+    compacite = models.CharField(max_length=50,
         choices=compacite_choix,
         default='indéfini'
         )
-    inclusion = models.CharField(max_length=100, null=True)
+    inclusion = models.CharField(blank=True, max_length=100, null=True)
     mobilier = models.TextField(blank=True, null=True)
     perturbation = models.TextField(blank=True, null=True)
-    interpretation_sedimentaire = models.CharField(max_length=100, null=True)
-    interpretation_pedologique = models.CharField(max_length=100, null=True)
+    interpretation_sedimentaire = models.CharField(blank=True, max_length=100, null=True)
+    interpretation_pedologique = models.CharField(blank=True, max_length=100, null=True)
     interface = models.CharField(max_length=100, null=True)
-    echantillon = models.CharField(max_length=100)
+    echantillon = models.CharField(max_length=100, default='undéfini')
     autre = models.TextField(blank=True, null=True)
 
     def __str__(self):
@@ -142,18 +147,16 @@ class Unite(models.Model):
 
 @python_2_unicode_compatible
 class Sequence(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    nom_sequence = models.CharField(max_length=100)
+    nom_sequence = models.CharField(unique=True, max_length=50)
     unite = models.ManyToManyField(Unite)
     
     def __str__(self):
-    	return self.nom_sequence  + ' ID :  ' + format(self.id)
+    	return self.nom_sequence
 
 @python_2_unicode_compatible
 class Mention(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     mention = models.TextField()
-    page = models.CharField(max_length=20)
+    page = models.CharField(max_length=50)
     commentaire = models.TextField(blank=True, null=True)
     document = models.ForeignKey(Document, blank=True, null=True)
     sequence =  models.ManyToManyField(Sequence)
@@ -163,7 +166,6 @@ class Mention(models.Model):
 
 @python_2_unicode_compatible
 class Operation(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nom_operation = models.CharField(max_length=100)
     type_op_choix =  (
     ('fouille préventive','fouille préventive'),
@@ -185,9 +187,10 @@ class Operation(models.Model):
 
 @python_2_unicode_compatible  # only if you need to support Python 2
 class Sondage(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nom_sondage = models.CharField(max_length=100)
     operation = models.ForeignKey(Operation, blank=True, null=True)
+
+    geom = gismodels.PointField(null=True, blank=True)
 
     def __str__(self):
     	return self.nom_sondage
@@ -195,14 +198,13 @@ class Sondage(models.Model):
 
 @python_2_unicode_compatible
 class Observation(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nom_observation = models.CharField(max_length=100)
     type_obs_choix = (
     ('log','log'),
     ('coupe','coupe'),
     ('plan','plan'),
     )
-    type_observation = models.CharField(max_length=5,
+    type_observation = models.CharField(max_length=50,
     	choices=type_obs_choix,
     	default='indéfini'
     	)
@@ -210,6 +212,8 @@ class Observation(models.Model):
     sequence = models.ForeignKey(Sequence, blank=True, null=True)
 
     acces_possible = models.BooleanField()
+
+    geom = gismodels.PointField(null=True, blank=True)
 
     def __str__(self):
     	return self.nom_observation
