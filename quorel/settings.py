@@ -89,11 +89,11 @@ WSGI_APPLICATION = 'quorel.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.mysql',
-         'NAME': 'quorel',
-         'USER': 'root',
+         'ENGINE': 'django.contrib.gis.db.backends.mysql',
+         'NAME': 'yogis$quorel',
+         'USER': 'yogis',
          'PASSWORD':'mcot',
-         'HOST':'localhost', # Set to empty string for localhost.
+         'HOST':'yogis.mysql.pythonanywhere-services.com', # Set to empty string for localhost.
          'PORT':'', # Set to empty string for default.
     }
 }
