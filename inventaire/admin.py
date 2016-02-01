@@ -64,6 +64,7 @@ class DocumentAdmin(ImportExportModelAdmin):
     inlines = [
         MentionInline,
     ]
+    list_filter = ('nom_document','auteur','annee','traitement')
     pass
 
 class MentionResource(resources.ModelResource):
@@ -147,6 +148,7 @@ class UniteResource(resources.ModelResource):
 class UniteAdmin(ImportExportModelAdmin):
     list_display = ('nom_unite','profondeur','epaisseur','texture_1','texture_2','couleur','nuance_couleur','valeur_couleur','tache','carbonate','type_carbon','structure_1','taille_structure','structure_2','sous_structure','compacite','inclusion','mobilier','interpretation_sedimentaire','interpretation_pedologique','interface','echantillon','autre')
     resource_class = UniteResource
+    list_filter = ('nom_unite','profondeur','epaisseur','texture_1','texture_2','couleur','nuance_couleur','valeur_couleur','couleur_MSCC','tache','carbonate','type_carbon','structure_1','taille_structure','structure_2','sous_structure','description_structure','compacite','inclusion','mobilier','perturbation','interpretation_sedimentaire','interpretation_pedologique','interface','echantillon','autre')
     pass
 
 
