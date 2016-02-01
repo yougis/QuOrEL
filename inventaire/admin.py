@@ -118,6 +118,15 @@ class SondageAdmin(ImportExportModelAdmin, LeafletGeoAdmin):
     list_display = ('nom_sondage','operation')
     resource_class = SondageResource
     form = SondageForm
+    fieldsets = [
+        (None, 
+        {'fields': (
+            ('nom_sondage','operation'),
+            #('coords_longlat','coords_lambert','dim3'),
+            ('z'),
+            ('geom'),   
+        ),}
+        ,)]
     pass
 
 class ObservationResource(resources.ModelResource):
