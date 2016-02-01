@@ -1,7 +1,7 @@
 from django.contrib import admin
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
-from django.contrib.gis import admin
+#from django.contrib.gis import admin
 from leaflet.admin import LeafletGeoAdmin
 from django import forms
 
