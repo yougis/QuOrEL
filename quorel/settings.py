@@ -79,6 +79,13 @@ LEAFLET_CONFIG = {
     'DEFAULT_ZOOM': 6,
     'MIN_ZOOM': 3,
     'MAX_ZOOM': 18, 
+    'PLUGINS': {
+    'forms': {
+        'js': ['Leaflet.Coordinates-0.1.5.src.js'],
+        'css': ['Leaflet.Coordinates-0.1.5.css'],
+        'auto-include': True,
+        },
+    }
 }
 
 WSGI_APPLICATION = 'quorel.wsgi.application'
@@ -90,11 +97,14 @@ WSGI_APPLICATION = 'quorel.wsgi.application'
 DATABASES = {
     'default': {
          'ENGINE': 'django.contrib.gis.db.backends.mysql',
+         #'NAME': 'quorel',
          'NAME': 'yogis$quorel',
+         #'USER': 'root',
          'USER': 'yogis',
          'PASSWORD':'mcot',
+         #'HOST':'localhost', # Set to empty string for localhost.
          'HOST':'yogis.mysql.pythonanywhere-services.com', # Set to empty string for localhost.
-         'PORT':'', # Set to empty string for default.
+         'PORT':'', # Set to empty string for default.         
     }
 }
 
