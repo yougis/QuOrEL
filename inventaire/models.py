@@ -179,8 +179,8 @@ class Operation(models.Model):
     	choices=type_op_choix,
     	default='indéfini'
     	)
-    geom = gismodels.PointField(null=True, blank=True, dim=3)
-
+    geom = gismodels.PointField(null=True, blank=True)
+    #geom = gismodels.PointField(null=True, blank=True, dim=3)
     def geom_as_text(self):
         return self.geom
 
@@ -194,7 +194,7 @@ class Sondage(models.Model):
     nom_sondage = models.CharField(max_length=100)
     operation = models.ForeignKey(Operation, blank=True, null=True)
 
-    geom = gismodels.PointField(null=True, blank=True, dim=3)
+    geom = gismodels.PointField(null=True, blank=True)
 
     def __str__(self):
     	return self.nom_sondage

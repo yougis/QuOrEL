@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.gis',
     'leaflet',
-    #'south',
     'inventaire.apps.InventaireConfig',
     'import_export',
 ]
