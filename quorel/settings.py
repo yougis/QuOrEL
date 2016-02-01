@@ -78,14 +78,7 @@ LEAFLET_CONFIG = {
     'DEFAULT_CENTER': (47.0, 3.0),
     'DEFAULT_ZOOM': 6,
     'MIN_ZOOM': 3,
-    'MAX_ZOOM': 18,
-    'PLUGINS': {
-    'forms': {
-        'js': ['Leaflet.Coordinates-0.1.5.src.js'],
-        'css': ['Leaflet.Coordinates-0.1.5.css'],
-        'auto-include': True,
-        },
-    }  
+    'MAX_ZOOM': 18, 
 }
 
 WSGI_APPLICATION = 'quorel.wsgi.application'
