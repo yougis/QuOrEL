@@ -180,6 +180,7 @@ class Operation(models.Model):
     	default='indéfini'
     	)
     geom = gismodels.PointField(null=True, blank=True, dim=3)
+
     def geom_as_text(self):
         return self.geom
 
@@ -192,7 +193,7 @@ class Operation(models.Model):
 class Sondage(models.Model):
     nom_sondage = models.CharField(max_length=100)
     operation = models.ForeignKey(Operation, blank=True, null=True)
-    
+
     geom = gismodels.PointField(null=True, blank=True, dim=3)
 
     def __str__(self):
