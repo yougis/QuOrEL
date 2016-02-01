@@ -14,7 +14,7 @@ from .models import Document, Mention, Observation, Sondage, Operation, Sequence
 class OperationForm(forms.ModelForm):
     #coords_longlat = forms.CharField(max_length=14)
     #coords_lambert = forms.CharField(max_length=30)
-    dim3 = forms.FloatField()
+    z = forms.FloatField()
 
     def add3D_to_geom(self):
         return self
@@ -22,6 +22,22 @@ class OperationForm(forms.ModelForm):
     class Meta:
         model = Operation
         exclude = ['']
+
+class SondageForm(forms.ModelForm):
+    #coords_longlat = forms.CharField(max_length=14)
+    #coords_lambert = forms.CharField(max_length=30)
+    z = forms.FloatField()
+
+    def add3D_to_geom(self):
+        return self
+    
+    class Meta:
+        model = Operation
+        exclude = ['']
+
+
+
+
 
 
 class MentionInline(admin.TabularInline):
@@ -84,7 +100,7 @@ class OperationAdmin(ImportExportModelAdmin, LeafletGeoAdmin):
         {'fields': (
             ('nom_operation','type_operation'),
             #('coords_longlat','coords_lambert','dim3'),
-            ('dim3'),
+            ('z'),
             ('geom'),   
         ),}
         ,)]
@@ -101,6 +117,7 @@ class SondageResource(resources.ModelResource):
 class SondageAdmin(ImportExportModelAdmin, LeafletGeoAdmin):
     list_display = ('nom_sondage','operation')
     resource_class = SondageResource
+    form = SondageForm
     pass
 
 class ObservationResource(resources.ModelResource):
