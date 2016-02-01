@@ -3,12 +3,30 @@ from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 from django.contrib.gis import admin
 from leaflet.admin import LeafletGeoAdmin
+from django import forms
+
 
 # Register your models here.
 from .models import Document, Mention, Observation, Sondage, Operation, Sequence, Unite
 
 
 
+class OperationForm(forms.ModelForm):
+    #coords_longlat = forms.CharField(max_length=14)
+    #coords_lambert = forms.CharField(max_length=30)
+    dim3 = forms.FloatField()
+
+    def add3D_to_geom(self):
+        return self
+    
+    class Meta:
+        model = Operation
+        exclude = ['']
+
+
+class MentionInline(admin.TabularInline):
+    model = Mention
+    extra = 1
 
 class DocumentResource(resources.ModelResource):
 
@@ -23,9 +41,12 @@ class DocumentAdmin(ImportExportModelAdmin):
         (None, {'fields': (
           ('nom_document','auteur','annee'),          
           'commentaire',
-          'traitement',
+          'traitement', 
         )         
         }),
+    ]
+    inlines = [
+        MentionInline,
     ]
     pass
 
@@ -54,9 +75,21 @@ class OperationResource(resources.ModelResource):
     class Meta:
         model = Operation
 
-class OperationAdmin(ImportExportModelAdmin):    
-    list_display = ('nom_operation','type_operation')
+class OperationAdmin(ImportExportModelAdmin, LeafletGeoAdmin):    
+    list_display = ('nom_operation','type_operation','geom_as_text',)
     resource_class = OperationResource
+    form = OperationForm
+    fieldsets = [
+        (None, 
+        {'fields': (
+            ('nom_operation','type_operation'),
+            #('coords_longlat','coords_lambert','dim3'),
+            ('dim3'),
+            ('geom'),   
+        ),}
+        ,)]
+    def geom_as_text(self, obj):
+        return obj.geom_as_text()
     pass
 
 class SondageResource(resources.ModelResource):
@@ -65,8 +98,6 @@ class SondageResource(resources.ModelResource):
         model = Sondage
 
 
-
-#@admin.register(Sondage)
 class SondageAdmin(ImportExportModelAdmin, LeafletGeoAdmin):
     list_display = ('nom_sondage','operation')
     resource_class = SondageResource
@@ -77,7 +108,7 @@ class ObservationResource(resources.ModelResource):
     class Meta:
         model = Observation
 
-class ObservationAdmin(ImportExportModelAdmin, LeafletGeoAdmin):
+class ObservationAdmin(ImportExportModelAdmin):
     list_display = ('nom_observation','type_observation','sondage','sequence','acces_possible')
     resource_class = ObservationResource
     pass
@@ -102,6 +133,7 @@ class SequenceAdmin(ImportExportModelAdmin):
     list_display = ('nom_sequence',)
     filter_horizontal = ("unite",)
     resource_class = SequenceResource
+    list_filter = ('nom_sequence', 'unite')
     pass
 
 

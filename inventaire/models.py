@@ -92,7 +92,7 @@ class Unite(models.Model):
     structure_choix =  (
     ('massive','massive'),
     ('lamellaire','lamellaire'),
-    ('polyyédrique','polyyédrique'),
+    ('polyédrique','polyédrique'),
     ('prismatique','prismatique'),
     ('grumeleuse','grumeleuse'),
     ('grenue','grenue')
@@ -162,7 +162,7 @@ class Mention(models.Model):
     sequence =  models.ManyToManyField(Sequence)
 
     def __str__(self):
-    	return self.Mention
+    	return self.mention
 
 @python_2_unicode_compatible
 class Operation(models.Model):
@@ -179,6 +179,10 @@ class Operation(models.Model):
     	choices=type_op_choix,
     	default='indéfini'
     	)
+    geom = gismodels.PointField(null=True, blank=True, dim=3)
+
+    def geom_as_text(self):
+        return self.geom
 
     def __str__(self):
     	return self.nom_operation + ' : ' + self.type_operation
@@ -190,7 +194,7 @@ class Sondage(models.Model):
     nom_sondage = models.CharField(max_length=100)
     operation = models.ForeignKey(Operation, blank=True, null=True)
 
-    geom = gismodels.PointField(null=True, blank=True)
+    geom = gismodels.PointField(null=True, blank=True, dim=3)
 
     def __str__(self):
     	return self.nom_sondage
@@ -213,7 +217,6 @@ class Observation(models.Model):
 
     acces_possible = models.BooleanField()
 
-    geom = gismodels.PointField(null=True, blank=True)
 
     def __str__(self):
     	return self.nom_observation
