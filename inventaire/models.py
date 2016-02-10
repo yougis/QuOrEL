@@ -4,7 +4,9 @@ import uuid
 from django.db import models
 from django.core.validators import MaxValueValidator
 from django.utils.encoding import python_2_unicode_compatible
-
+from django.core.urlresolvers import reverse
+import django_tables2 as tables
+#import mptt
 # import GIS
 from django.contrib.gis.db import models as gismodels
 
@@ -18,9 +20,19 @@ class Document(models.Model):
     annee = models.PositiveIntegerField(validators=[MaxValueValidator(2016)])
     commentaire = models.TextField(blank=True, null=True)
     traitement = models.BooleanField()
+    slug = models.SlugField(u'slug',blank=False, default='',help_text='indiquer un nom unique pour url', max_length=64)
+
+    #@permalink
+    def get_absolute_url(self):
+        return reverse('docDetail', args=[self.pk])
 
     def __str__(self):
     	return self.nom_document
+
+# try:
+#     mptt.register(Document)
+# except mptt.AlreadyRegistered:
+#     pass
 
 @python_2_unicode_compatible
 class Unite(models.Model):
@@ -138,7 +150,7 @@ class Unite(models.Model):
     interpretation_sedimentaire = models.CharField(blank=True, max_length=100, null=True)
     interpretation_pedologique = models.CharField(blank=True, max_length=100, null=True)
     interface = models.CharField(max_length=100, null=True)
-    echantillon = models.CharField(max_length=100, default='undéfini')
+    echantillon = models.CharField(max_length=100, default='indéfini')
     autre = models.TextField(blank=True, null=True)
 
     def __str__(self):
@@ -149,7 +161,7 @@ class Unite(models.Model):
 class Sequence(models.Model):
     nom_sequence = models.CharField(unique=True, max_length=50)
     unite = models.ManyToManyField(Unite)
-    
+
     def __str__(self):
     	return self.nom_sequence
 
@@ -180,9 +192,15 @@ class Operation(models.Model):
     	default='indéfini'
     	)
     geom = gismodels.PointField(null=True, blank=True, dim=3)
+    z = models.FloatField(null=True, blank=True)
+    slug = models.SlugField(u'slug',blank=False, default='',help_text='indiquer un nom unique pour url', max_length=64)
 
     def geom_as_text(self):
         return self.geom
+
+    @property
+    def popupContent(self):
+      return '<a href="'+ self.slug +'">'+ self.nom_operation +'</a>'
 
     def __str__(self):
     	return self.nom_operation + ' : ' + self.type_operation
@@ -220,3 +238,20 @@ class Observation(models.Model):
 
     def __str__(self):
     	return self.nom_observation
+
+
+
+class UniteTableFull(tables.Table):
+    unite = tables.Column(accessor='nom_unite')
+    #title = tables.Column()
+    epaisseur = tables.Column(accessor='epaisseur')
+    texture_1 = tables.Column(verbose_name="texture_1")
+    texture_2 = tables.Column(verbose_name="texture_2")
+     
+    class Meta:
+        model = Unite
+        exclude = ()
+        attrs = {"class": "paleblue"}
+
+
+

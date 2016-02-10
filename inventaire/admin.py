@@ -55,7 +55,7 @@ class DocumentAdmin(ImportExportModelAdmin):
     list_display = ('nom_document','auteur','annee','traitement')
     fieldsets = [
         (None, {'fields': (
-          ('nom_document','auteur','annee'),          
+          ('nom_document','slug'),('auteur','annee'),          
           'commentaire',
           'traitement', 
         )         
@@ -99,9 +99,9 @@ class OperationAdmin(ImportExportModelAdmin, LeafletGeoAdmin):
     fieldsets = [
         (None, 
         {'fields': (
-            ('nom_operation','type_operation'),
-            #('coords_longlat','coords_lambert','dim3'),
-            ('z'),
+            ('nom_operation','slug'),
+            ('type_operation','z'),
+            #('coords_longlat','coords_lambert','dim3'),            
             ('geom'),   
         ),}
         ,)]

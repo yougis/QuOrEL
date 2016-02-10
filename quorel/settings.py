@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'leaflet',
     'inventaire.apps.InventaireConfig',
     'import_export',
+    'djgeojson',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -97,13 +98,13 @@ WSGI_APPLICATION = 'quorel.wsgi.application'
 DATABASES = {
     'default': {
          'ENGINE': 'django.contrib.gis.db.backends.mysql',
-         #'NAME': 'quorel',
-         'NAME': 'yogis$quorel',
-         #'USER': 'root',
-         'USER': 'yogis',
+         'NAME': 'quorel',
+         #'NAME': 'yogis$quorel',
+         'USER': 'root',
+         #'USER': 'yogis',
          'PASSWORD':'mcot',
-         #'HOST':'localhost', # Set to empty string for localhost.
-         'HOST':'yogis.mysql.pythonanywhere-services.com', # Set to empty string for localhost.
+         'HOST':'localhost', # Set to empty string for localhost.
+         #'HOST':'yogis.mysql.pythonanywhere-services.com', # Set to empty string for localhost.
          'PORT':'', # Set to empty string for default.         
     }
 }
